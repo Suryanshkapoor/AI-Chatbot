@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import fetch from "node-fetch";
 import cors from "cors";
+import path from "path"; 
 
 dotenv.config();
 
@@ -16,6 +17,13 @@ const fn = (req, res) => {
 };
 
 app.get("/", fn);
+
+app.get("/node_modules/:file", (req, res) => {
+  const file = req.params.file;
+  const filePath = path.join(__dirname, "/node_modules", file);
+  res.type("application/javascript"); // Set the correct content type
+  res.sendFile(filePath);
+});
 
 app.post("/api/chat", async (req, res) => {
   const { messages } = req.body;
