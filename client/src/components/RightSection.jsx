@@ -39,7 +39,7 @@ function RightSection() {
               setLoading(true);
               // Make POST API call to localhost:8000/api/chat
 
-              const res = await fetch("http://localhost:8000/api/chat", {
+              const res = await fetch("https://ai-server-q4ey.onrender.com/api/chat", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
