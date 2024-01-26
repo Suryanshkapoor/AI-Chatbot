@@ -10,10 +10,10 @@ function RightSection() {
     <div className="h-full pl-[260px]">
       <main className="relative h-full w-full flex flex-col overflow-hidden items-stretch flex-1">
         <div className="flex-1 overflow-hidden">
-          <div className="flex flex-col text-sm h-screen bg-gray-600">
+          <div className="flex flex-col text-sm h-screen bg-lightBlack">
             <div className="text-gray-800 w-full max-w-2xl h-full flex flex-col px-6 min-w-full">
               {!loading && !responses && (
-                <h1 className="text-4xl text-white font-semibold text-center mt-[15vh] mx-auto mb-16">
+                <h1 className="text-4xl text-gray-100 font-semibold text-center mt-[20vh] mx-auto mb-16">
                   ChatGPT
                 </h1>
               )}
@@ -39,7 +39,7 @@ function RightSection() {
               setLoading(true);
               // Make POST API call to localhost:8000/api/chat
 
-              const res = await fetch("localhost:8000/api/chat", {
+              const res = await fetch("http://localhost:8000/api/chat", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -60,9 +60,9 @@ function RightSection() {
             }}
           >
             <div className="relative flex h-full flex-1 flex-col">
-              <div className="flex flex-col w-full flex-grow py-3 relative border border-gray-400 dark:border-gray-900/50 text-white rounded-md bg-[rgba(64,65,79, var(--tw-bg-opacity))]">
+              <div className="flex flex-col w-full flex-grow py-3 relative border border-black/10 dark:border-gray-900/50 text-white rounded-md bg-[rgba(64,65,79, var(--tw-bg-opacity))]">
                 <input
-                  className="m-0 w-full resize-none border-0 bg-transparent pl-4 focus:ring-0 focus-visible:ring-0 outline-0 overflow-y-hidden h-[23px]"
+                  className="m-0 w-full resize-none border-0 bg-transparent pl-4 focus:ring-0 focus-visible:ring-0 outline-none overflow-y-hidden h-[23px]"
                   value={prompt}
                   onChange={(e) => {
                     setPrompt(e.target.value);
