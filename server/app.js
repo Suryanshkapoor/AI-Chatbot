@@ -4,7 +4,6 @@ import bodyParser from "body-parser";
 import fetch from "node-fetch";
 import cors from "cors";
 
-
 dotenv.config();
 
 const app = express();
@@ -30,23 +29,32 @@ app.post("/api/chat", async (req, res) => {
     ],
   };
 
-  try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.API_KEY}`,
-      },
-      body: JSON.stringify({
-        ...data,
-        messages: [...data.messages, ...messages],
-      }),
-    });
-    const json = await response.json();
-    res.json({ question: messages, answer: json.choices });
-  } catch (error) {
-    console.log(error, "error");
-  }
+  const streamData = [];
+
+  req.on("data", (chunk) => {
+    // Handle incoming chunks of data
+    streamData.push(chunk.toString());
+  });
+
+  req.on("end", async () => {
+    try {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.API_KEY}`,
+        },
+        body: JSON.stringify({
+          ...data,
+          messages: [...data.messages, ...JSON.parse(streamData.join('')).messages],
+        }),
+      });
+      const json = await response.json();
+      res.json({ question: messages, answer: json.choices });
+    } catch (error) {
+      console.log(error, "error");
+    }
+  });
 });
 
 app.listen(8000, () => {
